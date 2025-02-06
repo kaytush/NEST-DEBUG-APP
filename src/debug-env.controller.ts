@@ -8,7 +8,7 @@ export class DebugEnvController {
     if (process.env.NODE_ENV === 'production') {
       throw new ForbiddenException('Access denied');
     }
-
+    // Return specific keys or all environment variables
     // Return specific keys or all environment variables
     return {
       NODE_ENV: process.env.NODE_ENV,

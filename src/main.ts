@@ -3,19 +3,21 @@ import { Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  try {
+    const app = await NestFactory.create(AppModule);
 
-  // Allow CORS (important for frontend apps)
-  app.enableCors();
+    // Enable CORS
+    app.enableCors();
 
-  // Optional: Set a global prefix if needed
-  // app.setGlobalPrefix('api'); // Uncomment if necessary
+    // Use the Azure-assigned port
+    const port = process.env.PORT || 3000;
+    await app.listen(port);
 
-  const port = process.env.PORT || 3000;
-  await app.listen(port);
-
-  // Log confirmation for debugging
-  Logger.log(`🚀 Server running on: http://localhost:${port}`, 'Bootstrap');
+    // Log success
+    Logger.log(`🚀 Server running on: http://localhost:${port}`, 'Bootstrap');
+  } catch (error) {
+    Logger.error('❌ Error starting server:', error.stack, 'Bootstrap');
+  }
 }
 
 bootstrap();
